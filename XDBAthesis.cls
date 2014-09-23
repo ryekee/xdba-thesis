@@ -44,16 +44,16 @@
 
 \ifXDBA@bachelor
     %% set line spacing 1.5times,1.24*14.5=18pt
-    \renewcommand{\baselinestretch}{1.24}
+    \renewcommand{\baselinestretch}{1.62}
 \else
     \setlength{\baselineskip}{20pt}
-    \setlength{\jot}{-2pt} 
+    \setlength{\jot}{-2pt}
 \fi
 
 % fix bullet for xetex with adobe font
-\ifxetex
-\renewcommand{\labelitemi}{\LARGE$\textbullet$}
-\fi
+%\ifxetex
+%\renewcommand{\labelitemi}{\LARGE$\textbullet$}
+%\fi
 % set equation numer as (1-5)
 \renewcommand{\theequation}{\thechapter-\arabic{equation}}
 
@@ -77,7 +77,7 @@
 
 \ifpdf   % We're running pdfTeX in PDF mode
     \RequirePackage[pdftex]{hyperref}
-    \DeclareGraphicsExtensions{.pdf}
+    \DeclareGraphicsExtensions{.pdf,.eps,.mps,.jpg,.png}
 \else    % We're not running pdfTeX, or running pdfTeX in DVI mode
     \ifXDBA@dvips
         \RequirePackage[dvips]{hyperref}
@@ -89,7 +89,7 @@
     \else
         \RequirePackage[dvipdfm]{hyperref}
     \fi
-    \DeclareGraphicsExtensions{.eps,.ps}
+    \DeclareGraphicsExtensions{.eps,.ps,.mps,.pdf,.jpg,.png}
 \fi
 \hypersetup{CJKbookmarks,%
        bookmarksnumbered,%
@@ -99,17 +99,19 @@
        %filecolor=black,
        %linkcolor=black,
        %urlcolor=black,
-       hidelinks, 
+       hidelinks,
        pdfstartview=FitH }
 
 \ifxetex
   \XDBA@gbkfalse
+  \RequirePackage[T1]{fontenc}
 \fi
 \ifXDBA@gbk
   \AtEndOfPackage{\makeatletter\input{XDBAthesis.cfg}\makeatother}
 \else
   \AtEndOfPackage{\makeatletter\input{XDBAthesis-utf8.cfg}\makeatother}
 \fi
+\RequirePackage{times} % set english fonts to Times New Roman
 
 %% set margin with left:3cm,right:2cm,up:3cm,down:2cm
 \oddsidemargin 1.46 true cm
@@ -181,7 +183,7 @@
 \renewcommand\maketitle{%
     \cleardoublepage
     \thispagestyle{empty}
-    \ifXDBA@bachelor  
+    \ifXDBA@bachelor
     \begin{flushright}
         \bf\songti\zihao{-4}
         \XDBA@label@class~ \XDBAunderline[100pt]{\XDBA@value@class}\\
@@ -244,7 +246,7 @@
         \vskip \stretch{0.3}
         \makebox[1cm]{}
     \setlength{\baselineskip}{20pt}
-        } 
+        }
     \fi
     \clearpage
     \if@twoside
@@ -275,10 +277,19 @@
     \fancyhead[LE,RO]{\songti\zihao{-5} ~\thepage~}
     \renewcommand{\headrulewidth}{0.75 pt}%
 }
+
 \fancypagestyle{content}{%
     \fancyhf{}
-    \fancyhead[CO]{\songti\zihao{5} \leftmark}
-    \fancyhead[CE]{\songti\zihao{5} {\XDBA@value@title\XDBA@value@resttitle}}
+    \fancyhead[CO]{\songti\zihao{5} \nouppercase \leftmark}
+    \fancyhead[CE]{\songti\zihao{5} \nouppercase {\XDBA@value@title\XDBA@value@resttitle}}
+    \fancyhead[LE,RO]{\songti\zihao{-5} ~\thepage~}
+    \renewcommand{\headrulewidth}{0.75pt}%
+}
+
+\fancypagestyle{tableOfContent}{%
+    \fancyhf{}
+    \fancyhead[CO]{\songti\zihao{5} \nouppercase \leftmark}
+    \fancyhead[CE]{\songti\zihao{5} \nouppercase \leftmark}
     \fancyhead[LE,RO]{\songti\zihao{-5} ~\thepage~}
     \renewcommand{\headrulewidth}{0.75pt}%
 }
@@ -287,7 +298,7 @@
     \fancyhf{}
     \fancyhead{}
     \fancyhead[CO]{\songti\zihao{5} \leftmark}
-    \fancyhead[CE]{\songti\zihao{5} {\XDBA@value@title\XDBA@value@resttitle}}
+    \fancyhead[CE]{\zihao{5} {\XDBA@value@title\XDBA@value@resttitle}}
     \fancyhead[LE,RO]{}
     \renewcommand{\headrulewidth}{0.75pt}%
 }
@@ -315,7 +326,7 @@
 
 \renewcommand\tableofcontents{%
   \setcounter{page}{1}
-  \pagestyle{content}
+  \pagestyle{tableOfContent}
     \if@twocolumn
         \@restonecoltrue\onecolumn
     \else
